@@ -138,49 +138,49 @@ struct voice_t {
   bool isPlaying;  // true when sample is playing
 } voice[NUM_VOICES] = {
   0,      // default voice 0 assignment - typically a kick but you can map them any way you want
-  250,  // initial level
+  850,  // initial level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
   
   1,      // default voice 1 assignment 
-  250,
+  850,
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
 
   2,    // default voice 2 assignment 
-  250, // level
+  850, // level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
 
   3,    // default voice 3 assignment 
-  250, // level
+  850, // level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
 
   4,    // default voice 4 assignment 
-  250,  // level
+  850,  // level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
 
   5,    // default voice 5 assignment 
-  250,  // level
+  850,  // level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
 
   6,    // default voice 6 assignment 
-  250,  // level
+  850,  // level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch
   false, // sample not playing
 
   10,    // default voice 7 assignment 
-  250,   // level
+  850,   // level
   0,    // sampleindex
   4096, // initial pitch step - normal pitch 
   false, // sample not playing
@@ -385,6 +385,15 @@ void loop() {
         if(!potlock[1]) voice[current_track].sampleincrement=(uint16_t)(map(potvalue[1],POT_MIN,POT_MAX,2048,8192)); // change sample pitch if pot has moved enough  
         if(!potlock[2]) voice[current_track].level=(int16_t)(map(potvalue[2],POT_MIN,POT_MAX,0,1000)); // change sample volume level if pot has moved enough   
       }
+      else if ( i == 3 && button[7]) { // use alternate setup for picos without usr button.
+          int newbpm=map(potvalue[0],POT_MIN,POT_MAX,50,305); // precalculate possible new BPM
+          if(!potlock[0] && (bpm !=newbpm)) {
+            bpm=newbpm; // set BPM
+            display_value(bpm-50); // show BPM Pikocore style
+          }
+          if(!potlock[1]) voice[current_track].sampleincrement=(uint16_t)(map(potvalue[1],POT_MIN,POT_MAX,2048,8192)); // change sample pitch if pot has moved enough  
+          if(!potlock[2]) voice[current_track].level=(int16_t)(map(potvalue[2],POT_MIN,POT_MAX,0,1000)); // change sample volume level if pot has moved enough      
+      }
       else { // a track button is pressed
         current_track=i; // keypress selects track we are working on
         //if ((!potlock[1]) || (!potlock[2])) seq[i].trigger=euclid(16,map(potvalue[1],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS),map(potvalue[2],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS-1)); // set track euclidean triggers if either pot has moved enough
@@ -492,5 +501,3 @@ void loop1(){
   digitalWrite(CPU_USE,1); // hi = CPU busy
 #endif
 }
-
-
