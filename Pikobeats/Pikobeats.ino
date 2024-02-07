@@ -402,7 +402,7 @@ void loop() {
 
         if (!potlock[1]) {
           seq[i].fills = map(potvalue[1], POT_MIN, POT_MAX, 0, 16);
-          seq[i].trigger->generateSequence(seq[i].fills, 32);
+          seq[i].trigger->generateSequence(seq[i].fills, 15);
 
           //seq[i].trigger= drumpatterns[map(potvalue[1],POT_MIN,POT_MAX,0,NUMPATTERNS-1)];
         } // look up drum trigger pattern
