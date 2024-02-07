@@ -1,5 +1,5 @@
 #pragma once
-#define NUMBER_OF_STEPS 16
+#define NUMBER_OF_STEPS 32
 
 class euclid {
 
@@ -14,14 +14,16 @@ public:
   bool getCurrentStep();
 
   void doStep();
-
+  void setRepeats(uint8_t repeats);
   void resetSequence();
 
 private:
 
   bool euclidianPattern[NUMBER_OF_STEPS+1];
   uint8_t stepCounter;
+  uint8_t repeatCounter;
   uint8_t numberOfSteps;
   uint8_t numberOfFills;
+  uint8_t repeats = 0;
 
 };

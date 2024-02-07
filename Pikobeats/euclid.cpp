@@ -5,7 +5,7 @@ void euclid::generateSequence( uint8_t fills, uint8_t steps){
   numberOfSteps=steps;
   if(fills>steps) fills=steps;
   if(fills<=steps){
-  for(int i=0;i<16;i++) euclidianPattern[i]=false;
+  for(int i=0;i<32;i++) euclidianPattern[i]=false;
     if(fills!=0){
       euclidianPattern[0]=true;
       float coordinate=(float)steps/(float)fills;
@@ -26,7 +26,7 @@ void euclid::generateRandomSequence( uint8_t fills, uint8_t steps){
     numberOfFills=fills;
     if(fills>steps) fills=steps;
     if(fills<=steps){
-    for(int i=0;i<16;i++) euclidianPattern[i]=false;
+    for(int i=0;i<32;i++) euclidianPattern[i]=false;
     //euclidianPattern[17]=true;
       if(fills!=0){
       //  euclidianPattern[0]=true;
@@ -67,9 +67,21 @@ bool euclid::getStep(uint8_t _step){
 bool euclid::getCurrentStep(){
   return euclidianPattern[stepCounter];
 }
+void euclid::setRepeats(uint8_t _repeats){
+  repeats = _repeats;
+}
 void euclid::doStep(){
-  if(stepCounter<(numberOfSteps-1)) stepCounter++;
-  else stepCounter=0;
+  if(stepCounter<(numberOfSteps-1)) { 
+    stepCounter++;
+    
+  } else { 
+    stepCounter=0;
+    repeatCounter++;
+    if (repeatCounter > repeats) {
+      rotate(2);
+      repeatCounter = 0;
+    }
+  }
 }
 
 void euclid::resetSequence(){

@@ -24,8 +24,8 @@ long clocktimer = 0; // clock rate in ms
 struct sequencer {
   public: euclid *trigger;  // euclid object to manage hits and patterns from bastl
     uint16_t fills;   // how many hits in 16
-    uint16_t repeats;   // how often to repeat pattern before new
-    uint8_t  count;
+    uint16_t repeats;   // set in euclid doStep for now, how often to repeat pattern before new
+    uint8_t  count;  // not used, see euclid doStep
     int16_t index;    // index of step we are on
 };
 
@@ -51,18 +51,8 @@ void clocktick (long clockperiod) {
       voice[track].sampleindex = 0; // trigger sample for this track
       voice[track].isPlaying = true;
     }
-
-    // end of sequence, increment repeat count
-    if (seq[track].trigger->getStepNumber() ==  15 ) {
-      seq[track].count++;
-    }
-    // if we hit end of the sequence and repeat counts reached, new sequence
-    if ( seq[track].count >= seq[track].repeats )  {
-      seq[track].trigger->generateSequence(seq[track].fills, 17);
-      seq[track].count = 0;
-    }
     seq[track].trigger->doStep(); // next step advance
-
+    
   }
 }
 
