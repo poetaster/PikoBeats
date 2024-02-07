@@ -56,11 +56,11 @@ void clocktick (long clockperiod) {
 
     if (seq[track].trigger->getStepNumber() ==  16 ) {
       seq[track].count++;
-      // if we hit end of the sequence and repeat counts reached, new sequence
-      if ( seq[track].count > seq[track].repeats )  {
-        seq[track].trigger->generateSequence(seq[track].fills, 17);
-        seq[track].count = 0;
-      }
+    }
+    // if we hit end of the sequence and repeat counts reached, new sequence
+    if ( seq[track].count > seq[track].repeats )  {
+      seq[track].trigger->generateSequence(seq[track].fills, 17);
+      seq[track].count = 0;
     }
 
   }
