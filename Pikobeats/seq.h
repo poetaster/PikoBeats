@@ -51,17 +51,17 @@ void clocktick (long clockperiod) {
       voice[track].sampleindex = 0; // trigger sample for this track
       voice[track].isPlaying = true;
     }
-    seq[track].trigger->doStep(); // next step advance
-    // end of sequence, increment repeat count
 
-    if (seq[track].trigger->getStepNumber() ==  16 ) {
+    // end of sequence, increment repeat count
+    if (seq[track].trigger->getStepNumber() ==  15 ) {
       seq[track].count++;
     }
     // if we hit end of the sequence and repeat counts reached, new sequence
-    if ( seq[track].count > seq[track].repeats )  {
+    if ( seq[track].count >= seq[track].repeats )  {
       seq[track].trigger->generateSequence(seq[track].fills, 17);
       seq[track].count = 0;
     }
+    seq[track].trigger->doStep(); // next step advance
 
   }
 }

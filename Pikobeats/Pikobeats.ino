@@ -401,14 +401,13 @@ void loop() {
         // set track euclidean triggers if either pot has moved enough
         
         if (!potlock[1]) { 
-          int fills = map(potvalue[1],POT_MIN,POT_MAX,0,16);
-          seq[i].fills= fills;
-          seq[i].trigger->generateSequence(fills, 17);
+          seq[i].fills= map(potvalue[1],POT_MIN,POT_MAX,0,16);
+          seq[i].trigger->generateSequence(seq[i].fills, 17);
+          
           //seq[i].trigger= drumpatterns[map(potvalue[1],POT_MIN,POT_MAX,0,NUMPATTERNS-1)];   
         } // look up drum trigger pattern
         if (!potlock[2]) {
-          int reps = map(potvalue[2],POT_MIN,POT_MAX,0,32);
-          seq[i].repeats= reps;
+          seq[i].repeats= map(potvalue[2],POT_MIN,POT_MAX,0,32);
           //seq[i].trigger= rightRotate(map(potvalue[2],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS-1),seq[i].trigger,16); // rotate trigger pattern
         }
         
