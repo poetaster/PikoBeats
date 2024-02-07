@@ -5,7 +5,7 @@ void euclid::generateSequence( uint8_t fills, uint8_t steps){
   numberOfSteps=steps;
   if(fills>steps) fills=steps;
   if(fills<=steps){
-  for(int i=0;i<32;i++) euclidianPattern[i]=false;
+  for(int i=0;i<16;i++) euclidianPattern[i]=false;
     if(fills!=0){
       euclidianPattern[0]=true;
       float coordinate=(float)steps/(float)fills;
@@ -26,7 +26,7 @@ void euclid::generateRandomSequence( uint8_t fills, uint8_t steps){
     numberOfFills=fills;
     if(fills>steps) fills=steps;
     if(fills<=steps){
-    for(int i=0;i<32;i++) euclidianPattern[i]=false;
+    for(int i=0;i<16;i++) euclidianPattern[i]=false;
     //euclidianPattern[17]=true;
       if(fills!=0){
       //  euclidianPattern[0]=true;

@@ -9,7 +9,7 @@
 #define CLOCKPULSE 15 // duration of clock out pulse
 int16_t bpm = TEMPO;
 int32_t lastMIDIclock; // timestamp of last MIDI clock
-int16_t MIDIclocks=PPQN*2; // midi clock counter
+int16_t MIDIclocks = PPQN * 2; // midi clock counter
 int16_t MIDIsync = 16;  // number of clocks required to sync BPM
 int16_t useMIDIclock = 0; // true if we are using MIDI clock
 long clocktimer = 0; // clock rate in ms
@@ -22,36 +22,23 @@ long clocktimer = 0; // clock rate in ms
 // must be careful about editing items that are used by the 2nd Pico core for note timing etc
 
 struct sequencer {
-  uint16_t trigger;  // bit map of triggers MSB first
-  int16_t index;    // index of step we are on
+  public: euclid *trigger;  // euclid object to manage hits and patterns from bastl
+    uint16_t fills;   // how many hits in 16
+    uint16_t repeats;   // how often to repeat pattern before new
+    uint8_t  count;
+    int16_t index;    // index of step we are on
 };
 
-// notes are stored as offsets from the root 
+
 sequencer seq[NTRACKS] = {
-  0b1000100010001000, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
-  0, // triggers
-  DEFAULT_SEQ_STEPS-1,   // step index
-
+  new euclid(), 4, 2, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
+  new euclid(), 0, 0, 0, DEFAULT_SEQ_STEPS - 1, // step index
 };
 
 // clock all the sequencers
@@ -59,26 +46,36 @@ sequencer seq[NTRACKS] = {
 // it loops thru all tracks looking for trigger events to process
 void clocktick (long clockperiod) {
 
-  for (uint8_t track=0; track<NTRACKS;++track) { // note that triggers are stored MSB first
-    if (bitRead(seq[track].trigger,seq[track].index)) {
-      voice[track].sampleindex=0; // trigger sample for this track
-      voice[track].isPlaying=true;
+  for (uint8_t track = 0; track < NTRACKS; ++track) { // note that triggers are stored MSB first
+    if ( seq[track].trigger->getCurrentStep() ) {
+      voice[track].sampleindex = 0; // trigger sample for this track
+      voice[track].isPlaying = true;
     }
-    if ((--seq[track].index) <0) seq[track].index=DEFAULT_SEQ_STEPS-1; // restart the sequence at end
+    seq[track].trigger->doStep(); // next step advance
+    // end of sequence, increment repeat count
+
+    if (seq[track].trigger->getStepNumber() ==  16 ) {
+      seq[track].count++;
+      // if we hit end of the sequence and repeat counts reached, new sequence
+      if ( seq[track].count > seq[track].repeats )  {
+        seq[track].trigger->generateSequence(seq[track].fills, 17);
+        seq[track].count = 0;
+      }
+    }
+
   }
 }
- 
+
 
 // must be called regularly for sequencer to run
 // hard wired to 16th notes at the moment
 void do_clocks(void) {
   //long clockperiod= (long)(((60.0/(float)bpm)/PPQN)*1000);
-  long clockperiod= (long)(((60.0/(float)bpm)/NOTE_DURATION)*1000);
+  long clockperiod = (long)(((60.0 / (float)bpm) / NOTE_DURATION) * 1000);
   if ((millis() - clocktimer) > clockperiod) {
-    clocktimer=millis(); 
+    clocktimer = millis();
     clocktick(clockperiod);
-    digitalWrite(CLOCKOUT,1); // external clock high
+    digitalWrite(CLOCKOUT, 1); // external clock high
   }
-  if ((millis() - clocktimer) > CLOCKPULSE) digitalWrite(CLOCKOUT,0); // external clock low
+  if ((millis() - clocktimer) > CLOCKPULSE) digitalWrite(CLOCKOUT, 0); // external clock low
 }
-

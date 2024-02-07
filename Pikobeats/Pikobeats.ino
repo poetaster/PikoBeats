@@ -47,6 +47,7 @@
 #include <PWMAudio.h>
 #include "io.h"
 #include "drumpatterns.h"
+#include "euclid.h"
 
 //#define MONITOR_CPU  // define to monitor Core 2 CPU usage on pin CPU_USE
 
@@ -358,8 +359,8 @@ void setup() {
   MIDI.begin(MIDI_CHANNEL_OMNI);
   */
 
-  seq[0].trigger=0b1000100010001000;
-
+  //seq[0].trigger=0b1000100010001000;
+  seq[0].trigger->generateSequence(6,16);
   display_value(NUM_SAMPLES); // show number of samples on the display
 
 }
@@ -396,9 +397,21 @@ void loop() {
       }
       else { // a track button is pressed
         current_track=i; // keypress selects track we are working on
-        //if ((!potlock[1]) || (!potlock[2])) seq[i].trigger=euclid(16,map(potvalue[1],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS),map(potvalue[2],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS-1)); // set track euclidean triggers if either pot has moved enough
-        if (!potlock[1]) seq[i].trigger= drumpatterns[map(potvalue[1],POT_MIN,POT_MAX,0,NUMPATTERNS-1)]; // look up drum trigger pattern
-        if (!potlock[2]) seq[i].trigger= rightRotate(map(potvalue[2],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS-1),seq[i].trigger,16); // rotate trigger pattern
+        //if ((!potlock[1]) || (!potlock[2])) seq[i].trigger=euclid(16,map(potvalue[1],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS),map(potvalue[2],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS-1)); 
+        // set track euclidean triggers if either pot has moved enough
+        
+        if (!potlock[1]) { 
+          int fills = map(potvalue[1],POT_MIN,POT_MAX,0,16);
+          seq[i].fills= fills;
+          seq[i].trigger->generateSequence(fills, 17);
+          //seq[i].trigger= drumpatterns[map(potvalue[1],POT_MIN,POT_MAX,0,NUMPATTERNS-1)];   
+        } // look up drum trigger pattern
+        if (!potlock[2]) {
+          int reps = map(potvalue[2],POT_MIN,POT_MAX,0,32);
+          seq[i].repeats= reps;
+          //seq[i].trigger= rightRotate(map(potvalue[2],POT_MIN,POT_MAX,0,MAX_SEQ_STEPS-1),seq[i].trigger,16); // rotate trigger pattern
+        }
+        
         if(!potlock[0]) { // change sample if pot has moved enough
           int16_t newsample=(int16_t) map(potvalue[0],POT_MIN,POT_MAX,0,NUM_SAMPLES-1); // precompute new sample
           if (voice[i].sample != newsample) { 
@@ -430,7 +443,7 @@ void loop() {
 // if display is not busy show track triggers on leds
   if ((millis()-display_timer) > DISPLAY_TIME) {
     for (int i=LED0;i<=LED7;++i) { // LED port numbers are sequential on the Pikocore
-      if (bitRead(seq[i-LED0].trigger,seq[i-LED0].index)) digitalWrite(i,1);
+      if ( seq[i-LED0].trigger->getCurrentStep() ) digitalWrite(i,1);
       else digitalWrite(i,0);
     }
   }
