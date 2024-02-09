@@ -1,31 +1,31 @@
 /* Copyright 2023 Rich Heslip, 2024 Mark Washeim
-//
-// Author: Rich Heslip
-// Author: Mark Washeim <blueprint@poetaster.de>
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
-// See http://creativecommons.org/licenses/MIT/ for more information.
-//
-// -----------------------------------------------------------------------------
-//
-//
+
+ Author: Rich Heslip
+ Author: Mark Washeim <blueprint@poetaster.de>
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+
+ See http://creativecommons.org/licenses/MIT/ for more information.
+
+ -----------------------------------------------------------------------------
+
+
 // sample player inspired by Jan Ostman's ESP8266 drum machine http://janostman.wordpress.com
 // completely rewritten for the Motivation Radio Eurorack module
 // plays samples in response to gate/trigger inputs and MIDI note on messages
@@ -37,9 +37,12 @@
 // Feb 2024 - added step clock out
 // Feb 2024 - blueprint replaced pattern logic.
 // Feb 2024 - blueprint add  beatbox kit 
+
 samples from:
-giddster ( https://freesound.org/people/giddster/ )
-AlienXXX ( https://freesound.org/people/AlienXXX/
+  giddster ( https://freesound.org/people/giddster/ )
+  AlienXXX ( https://freesound.org/people/AlienXXX/
+The euclid code originates at:
+  https://github.com/bastl-instruments/one-chip-modules/blob/master/EUCLID/EUCLID.ino
 
 */
 
