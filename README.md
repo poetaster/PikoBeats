@@ -6,6 +6,11 @@ Please visit Zack's site to buy a Pikocore, a kit, or a PCB - its a really fun l
 
 This firmware is based on https://github.com/rheslip/PikoBeats and the Euclidean one chip module from bastl instruments https://github.com/bastl-instruments/one-chip-modules/blob/master/EUCLID/EUCLID.ino
 
+The beatbox kit is composed of samples from:
+
+* giddster ( https://freesound.org/people/giddster/ )
+* AlienXXX ( https://freesound.org/people/AlienXXX/
+
 Controls:
 
 To select a track - press and hold one of the 8 main buttons
