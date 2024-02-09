@@ -1,6 +1,7 @@
-// Copyright 2023 Rich Heslip
+/* Copyright 2023 Rich Heslip, 2024 Mark Washeim
 //
 // Author: Rich Heslip
+// Author: Mark Washeim <blueprint@poetaster.de>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +35,13 @@
 // Jan 2023 - ported code to Pi Pico so I can use it on a 16mb flash version
 // oct 2023 - ported to Pikocore Hardware and converted to a simple beatbox
 // Feb 2024 - added step clock out
+// Feb 2024 - blueprint replaced pattern logic.
+// Feb 2024 - blueprint add  beatbox kit 
+samples from:
+giddster ( https://freesound.org/people/giddster/ )
+AlienXXX ( https://freesound.org/people/AlienXXX/
 
+*/
 
 #include <Arduino.h>
 #include "stdio.h"
@@ -46,7 +53,6 @@
 //#include "MIDI.h"
 #include <PWMAudio.h>
 #include "io.h"
-#include "drumpatterns.h"
 #include "euclid.h"
 
 //#define MONITOR_CPU  // define to monitor Core 2 CPU usage on pin CPU_USE
@@ -201,15 +207,18 @@ struct voice_t {
 // wave2header also creates "samples.h" which #includes all the generated header files
 
 
-//include "808samples/samples.h" // 808 sounds
-#include "Angular_Jungle_Set/samples.h"   // Jungle soundfont set - great!
+//#include "808samples/samples.h" // 808 sounds
+//#include "Angular_Jungle_Set/samples.h"   // Jungle soundfont set - great!
 //#include "Angular_Techno_Set/samples.h"   // Techno
 //#include "Acoustic3/samples.h"   // acoustic drums
 //#include "Pico_kit/samples.h"   // assorted samples
 //#include "testkit/samples.h"   // small kit for testing
 //#include "Trashrez/samples.h"
 //#include "world/samples.h"
-
+//#include "mt40sr88sy1/samples.h"
+//#include "kurzweill/samples.h"
+#include "beatbox/samples.h"
+ 
 #define NUM_SAMPLES (sizeof(sample)/sizeof(sample_t))
 
 // sample and debounce the keys
@@ -360,7 +369,7 @@ void setup() {
   */
 
   //seq[0].trigger=0b1000100010001000;
-  seq[0].trigger->generateSequence(8, 32);
+  seq[0].trigger->generateSequence(4, 16);
   display_value(NUM_SAMPLES); // show number of samples on the display
 
 }
